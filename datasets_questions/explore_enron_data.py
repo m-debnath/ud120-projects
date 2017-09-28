@@ -19,4 +19,7 @@ import pickle
 
 enron_data = pickle.load(open("../final_project/final_project_dataset.pkl", "r"))
 
-
+print "number of people:", len(enron_data.keys())
+print "number of features:", len(enron_data['DONAHUE JR JEFFREY M'].keys())
+print "number of poi:", len([enron_data[key]["poi"] for key in enron_data.keys() if enron_data[key]["poi"]])
+print "names of poi:", [key for key in enron_data.keys() if enron_data[key]["poi"]]
