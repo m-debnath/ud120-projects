@@ -19,52 +19,60 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 dictionary = pickle.load( open("../final_project/final_project_dataset_modified.pkl", "r") )
 
-### list the features you want to look at--first item in the 
-### list will be the "target" feature
+print "features:", dictionary['METTS MARK'].keys()
 features_list = ["bonus", "salary"]
+#features_list = ["bonus", "long_term_incentive"]
+# long_term_incentive
 data = featureFormat( dictionary, features_list, remove_any_zeroes=True)
 target, features = targetFeatureSplit( data )
 
-### training-testing split needed in regression, just like classification
-from sklearn.cross_validation import train_test_split
+
+from sklearn.model_selection import train_test_split
+# from sklearn.cross_validation import train_test_split
 feature_train, feature_test, target_train, target_test = train_test_split(features, target, test_size=0.5, random_state=42)
 train_color = "b"
 test_color = "b"
 
 
-
-### Your regression goes here!
-### Please name it reg, so that the plotting code below picks it up and 
-### plots it correctly. Don't forget to change the test_color above from "b" to
-### "r" to differentiate training points from test points.
-
+from sklearn.linear_model import LinearRegression
+reg = LinearRegression()
+reg.fit(feature_train, target_train)
+#reg.fit(features, target)
 
 
-
-
-
-
-
-### draw the scatterplot, with color-coded training and testing points
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 for feature, target in zip(feature_test, target_test):
-    plt.scatter( feature, target, color=test_color ) 
-for feature, target in zip(feature_train, target_train):
-    plt.scatter( feature, target, color=train_color ) 
+    plt.scatter( feature, target, color=test_color )
+#for feature, target in zip(feature_train, target_train):
+#    plt.scatter( feature, target, color=train_color )
 
 ### labels for the legend
-plt.scatter(feature_test[0], target_test[0], color=test_color, label="test")
-plt.scatter(feature_test[0], target_test[0], color=train_color, label="train")
+# plt.scatter(feature_test[0], target_test[0], color=test_color, label="test")
+# plt.scatter(feature_test[0], target_test[0], color=train_color, label="train")
 
+plt.scatter(feature_train[0], target_train[0], color=test_color, label="test")
+plt.scatter(feature_train[0], target_train[0], color=train_color, label="train")
 
+print "coef m:", reg.coef_
+print "intercept b:", reg.intercept_
+print "train score:", round(reg.score(feature_train, target_train), 3)
+print "test score:", round(reg.score(feature_test, target_test), 3)
 
 
 ### draw the regression line, once it's coded
 try:
     plt.plot( feature_test, reg.predict(feature_test) )
+    reg.fit(feature_test, target_test)
+    print "slope new:", round(reg.coef_, 3)
+    print "train score new:", round(reg.score(feature_train, target_train), 3)
+    print "test score new:", round(reg.score(feature_test, feature_test), 3)
+    plt.plot(feature_train, reg.predict(feature_train))
 except NameError:
     pass
+
 plt.xlabel(features_list[1])
 plt.ylabel(features_list[0])
 plt.legend()
-plt.show()
+# plt.show()
+# plt.savefig("test_bonus_salary_excl_outliers.png")
