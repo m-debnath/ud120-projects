@@ -12,6 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/outliers" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/regression" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/k_means" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/text_learning" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 2.7.13 (~/anaconda2/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
