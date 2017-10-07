@@ -44,14 +44,14 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
         #temp_counter += 1
         #if temp_counter < 200:
         path = os.path.join('..', path[:-1])
-        #print path
+        print path
         email = open(path, "r")
 
         ### use parseOutText to extract the text from the opened email
         stemmed_email = parseOutText(email)
 
         ### use str.replace() to remove any instances of the words
-        signature_words = ["sara", "shackleton", "chris", "germani"]
+        signature_words = ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]
         for word in signature_words:
             stemmed_email = stemmed_email.replace(word, "")
 
