@@ -26,6 +26,36 @@ labels, features = targetFeatureSplit(data)
 
 
 
-### your code goes here 
+### your code goes here
+from sklearn import model_selection
+features_train, features_test, labels_train, labels_test = model_selection.train_test_split(features, labels,
+                                                                                           test_size=0.3,
+                                                                                           random_state=42)
 
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+print [pred[ii] * 1. for ii in range(0, len(pred))]
+print labels_test
+print len([pred[ii] for ii in range(0, len(pred)) if pred[ii] == 1])
+
+pred_not_poi = [0 for ii in range(0, len(pred))]
+print pred_not_poi
+
+from sklearn.metrics import accuracy_score
+score = accuracy_score(labels_test, pred)
+print "score:", round(score, 3)
+score = accuracy_score(labels_test, pred_not_poi)
+print "score:", round(score, 3)
+
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+
+precision = precision_score(labels_test, pred)
+print "precision:", round(precision, 3)
+
+recall = recall_score(labels_test, pred)
+print "recall:", round(recall, 3)
 
