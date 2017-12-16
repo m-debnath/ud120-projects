@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$USER_HOME$/PycharmProjects/Ubuntu_System/.idea/Ubuntu_System.iml" filepath="$USER_HOME$/PycharmProjects/Ubuntu_System/.idea/Ubuntu_System.iml" />
+      <module fileurl="file://$USER_HOME$/machine-learning/.idea/machine-learning.iml" filepath="$USER_HOME$/machine-learning/.idea/machine-learning.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ud120-projects.iml" filepath="$PROJECT_DIR$/.idea/ud120-projects.iml" />
     </modules>
   </component>

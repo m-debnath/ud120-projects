@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
-import sys
 import pickle
+import sys
+
 sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
@@ -10,7 +11,8 @@ from tester import dump_classifier_and_data
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi','salary'] # You will need to use more features
+features_list = ['poi', 'salary', 'total_payments', 'total_stock_value',
+                 'exercised_stock_options', 'bonus', 'long_term_incentive']  # You will need to use more features
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
@@ -21,14 +23,55 @@ with open("final_project_dataset.pkl", "r") as data_file:
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
 
+my_dataset.pop("TOTAL", 0)
+# print [[key, my_dataset[key]['salary']] for key in my_dataset if
+#        my_dataset[key]['salary'] > 1000000 and my_dataset[key]['salary'] != "NaN"]
+# print [[key, my_dataset[key]['total_payments']] for key in my_dataset if
+#        my_dataset[key]['total_payments'] > 1000000 and my_dataset[key]['total_payments'] != "NaN"]
+#
+# print [[key, my_dataset[key]['total_stock_value']] for key in my_dataset.keys() if
+#        my_dataset[key]['total_stock_value'] > 10000000 and my_dataset[key]['total_stock_value'] != "NaN"]
+# print [[key, my_dataset[key]['exercised_stock_options']] for key in my_dataset if
+#        my_dataset[key]['exercised_stock_options'] > 1000000 and my_dataset[key]['exercised_stock_options'] != "NaN"]
+#
+# print [[key, my_dataset[key]['bonus']] for key in my_dataset if
+#        my_dataset[key]['bonus'] > 1000000 and my_dataset[key]['bonus'] != "NaN"]
+# print [[key, my_dataset[key]['long_term_incentive']] for key in my_dataset if
+#        my_dataset[key]['long_term_incentive'] > 1000000 and my_dataset[key]['long_term_incentive'] != "NaN"]
+#
 ### Extract features and labels from dataset for local testing
-data = featureFormat(my_dataset, features_list, sort_keys = True)
+data = featureFormat(my_dataset, features_list, sort_keys=True)
 labels, features = targetFeatureSplit(data)
 
-print len(features)
-print len(labels)
-print len(data_dict)
-print len(data)
+### rubric Data Exploration
+# print len(features)
+# print len(labels)
+# print [[key, my_dataset[key]['salary']] for key in my_dataset.keys() if my_dataset[key]['salary'] != "NaN"]
+# print my_dataset["METTS MARK"].keys()
+# print len(data)
+# print my_dataset
+
+# for key in my_dataset.keys():
+#     if my_dataset[key]['salary'] == "NaN":
+#         my_dataset[key]['salary'] = 0.
+#
+#
+# print [[key, my_dataset[key]['salary']] for key in my_dataset.keys() if my_dataset[key]['salary'] != "NaN"]
+#
+# print len([[key, my_dataset[key]['poi']] for key in my_dataset.keys() if my_dataset[key]['poi']])
+
+### Apply cross validation K =
+# from sklearn.model_selection import KFold
+# kf = KFold(n_splits=8, shuffle=True)
+# for train_index, test_index in kf.split(data):
+#     md_features_train, md_features_test = data[train_index], data[test_index]
+#     md_labels_train, md_labels_train = data[train_index], data[test_index]
+#
+# print len(md_features_train)
+# print len(md_features_test)
+
+
+
 
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
@@ -37,8 +80,10 @@ print len(data)
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 # Provided to give you a starting point. Try a variety of classifiers.
-from sklearn.naive_bayes import GaussianNB
-clf = GaussianNB()
+# from sklearn.naive_bayes import GaussianNB
+#
+# clf = GaussianNB()
+
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -49,8 +94,15 @@ clf = GaussianNB()
 
 # Example starting point. Try investigating other evaluation techniques!
 from sklearn.model_selection import train_test_split
+
 features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
+
+
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
+clf.fit(features_train, labels_train)
+print [[ii, clf.feature_importances_[ii]] for ii in range(0, len(clf.feature_importances_)) if clf.feature_importances_[ii] > 0.02]
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
